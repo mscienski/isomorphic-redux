@@ -3,6 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: [
+        'babel-polyfill',
         'webpack-dev-server/client?http://127.0.0.1:8080',
         'webpack/hot/only-dev-server',
         './client'
@@ -20,7 +21,7 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loaders: ['react-hot', 'babel']
+                loaders: ['react-hot', 'babel-loader']
             }
         ]
     },

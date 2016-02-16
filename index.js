@@ -1,6 +1,7 @@
-require('babel/register')({});
+require('babel-register');
+require('babel-polyfill');
 
-var server = require('./server');
+var server = require('./server').default;
 
 const PORT = process.env.PORT || 3000;
 
