@@ -1,8 +1,8 @@
 import express from 'express';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import {RouterContext, match} from 'react-router';
-import createLocation from 'history/lib/createLocation';
+import {RouterContext, match, browserHistory} from 'react-router';
+import {createLocation} from 'history';
 import routes from 'routes';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
@@ -31,7 +31,7 @@ app.use((req, res) => {
             </Provider>
         );
 
-        const initialState = store.getState();
+        const initialState = JSON.stringify(store.getState());
 
         const componentHTML = renderToString(InitialComponent);
 
@@ -42,7 +42,7 @@ app.use((req, res) => {
                     <meta charset="utf-8">
                     <title>Isomorphic Redux Demo</title>
                     <script type="application/javascript">
-                        window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
+                        window.__INITIAL_STATE__ = ${initialState};
                     </script>
                 </head>
                 <body>
