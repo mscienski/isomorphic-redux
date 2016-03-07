@@ -8,11 +8,11 @@ const handleSubmit = () => {
     node.value = '';
 };
 
-const TodosForm = () => {
+const TodosForm = () => (
     <div id="todo-form">
         <input type="text" placeholder="type todo" ref="todo-input" />
         <input type="submit" value="OK!" onClick={handleSubmit} />
     </div>
-};
+);
 
 export default TodosForm;
