@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TodosList from 'containers/TodosList';
+import TodosForm from 'containers/TodosForm';
 import * as TodoActions from 'actions/TodoActions';
 import { connect } from 'react-redux';
 
@@ -15,6 +16,7 @@ export default class Home extends Component {
         return (
             <div id="todo-list">
                 <TodosList todos={this.props.todos}/>
+                <TodosForm />
             </div>
         )
     }
