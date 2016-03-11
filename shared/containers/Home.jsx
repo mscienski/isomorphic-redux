@@ -3,11 +3,18 @@ import TodosList from 'containers/TodosList';
 import * as TodoActions from 'actions/TodoActions';
 import { connect } from 'react-redux';
 
+const mapStateToProps = function(state) {
+    return {
+        todos: state.todos
+    }
+};
+
+@connect(mapStateToProps)
 export default class Home extends Component {
     render() {
         return (
             <div id="todo-list">
-                <TodosView todos={todos}/>
+                <TodosList todos={this.props.todos}/>
             </div>
         )
     }

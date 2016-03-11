@@ -3,19 +3,6 @@ import {deleteTodo, editTodo} from 'actions/TodoActions';
 import Todo from 'components/Todo';
 import {connect} from 'react-redux';
 
-const handleDelete = (e) => {
-    const id = Number(e.target.dataset.id);
-    deleteTodo(id);
-};
-
-const handleEdit = (e) => {
-    const id = Number(e.target.dataset.id);
-    const val = todos[id].text;
-
-    let newVal = window.prompt('', val);
-    editTodo(id, newVal);
-};
-
 const mapStateToProps = (state, ownProps) => {
     return {
         todos: ownProps.todos
@@ -25,10 +12,11 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         handleDelete: (id) => {
-            dispatch(handleDelete(id))
+            dispatch(deleteTodo(id))
         },
-        handleEdit: (id) => {
-            dipatch(handleEdit(id))
+        handleEdit: (id, val) => {
+            let newVal = window.prompt('', val);
+            dispatch(editTodo(id, newVal))
         }
     }
 };
@@ -39,10 +27,11 @@ export default class TodosList extends Component {
         return (
             <div>
                 {this.props.todos.map((todo, index) =>
-                    <Todo key={index}
-                        {...todo}
-                          handleDelete={() => this.props.handleDelete(index)}
-                          handleEdit={() => this.props.handleEdit(index)}
+                    <Todo
+                        key={index}
+                        todo={todo}
+                        handleDelete={() => this.props.handleDelete(index)}
+                        handleEdit={() => this.props.handleEdit(index, todo)}
                     />
                 )}
             </div>

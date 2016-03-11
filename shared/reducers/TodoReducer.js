@@ -1,22 +1,18 @@
-const defaultState = [{
-    1: {
-        text: 'Bleh'
-    }
-}];
+const defaultState = ['Bleh', 'Blah', 'Foo'];
 
 export default function todoReducer(state = defaultState, action) {
     switch(action.type) {
         case 'CREATE_TODO':
             return [...state, action.text];
         case 'EDIT_TODO':
-            return state
-                .slice(0, state.indexOf(action.text) - 1)
-                .concat(state[state.indexOf(action.text)])
-                .concat(state.slice(state.indexOf(action.text)));
+            return state.map((text, index) => {
+                return (action.id === index) ? action.text : text
+            });
         case 'DELETE_TODO':
-            return state
-                .slice(0, state.indexOf(action.text) -1)
-                .concat(state.slice(state.indexOf(action.text)));
+            let deleteState = state.slice();
+            deleteState.splice(action.id, 1);
+
+            return newState;
         default:
             return state;
     }

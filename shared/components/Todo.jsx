@@ -1,13 +1,13 @@
 import React, {PropTypes} from 'react';
 
-const Todo = (handleDelete, handleEdit, text) => (
+const Todo = ({todo, handleDelete, handleEdit}) => (
     <div>
-        <span>{text}</span>
+        <span>{todo}</span>
 
-        <button data-id={index} onClick={handleDelete}>
+        <button onClick={handleDelete}>
             X
         </button>
-        <button data-id={index} onClick={handleEdit}>
+        <button onClick={handleEdit}>
             Edit
         </button>
     </div>
