@@ -7,6 +7,7 @@ import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import promiseMiddleware from 'lib/promiseMiddleware';
 import {Provider} from 'react-redux';
 import * as reducers from 'reducers';
+import fetchComponentData from 'lib/fetchComponentData';
 
 const app = express();
 
@@ -28,34 +29,41 @@ app.use((req, res) => {
             return res.status(404).end('Not found');
         }
 
-        const InitialComponent = (
-            <Provider store={store}>
-                <RouterContext {...renderProps} />
-            </Provider>
-        );
+        function renderView() {
+            const InitialComponent = (
+                <Provider store={store}>
+                    <RouterContext {...renderProps} />
+                </Provider>
+            );
 
-        const initialState = JSON.stringify(store.getState());
+            const initialState = JSON.stringify(store.getState());
 
-        const componentHTML = renderToString(InitialComponent);
+            const componentHTML = renderToString(InitialComponent);
 
-        const HTML = `
-            <!doctype html>
-            <html>
-                <head>
-                    <meta charset="utf-8">
-                    <title>Isomorphic Redux Demo</title>
-                    <script type="application/javascript">
-                        window.__INITIAL_STATE__ = ${initialState};
-                    </script>
-                </head>
-                <body>
-                    <div id="react-view">${componentHTML}</div>
-                    <script type="application/javascript" src="/bundle.js"></script>
-                </body>
-            </html>
-        `;
+            const HTML = `
+                <!doctype html>
+                <html>
+                    <head>
+                        <meta charset="utf-8">
+                        <title>Isomorphic Redux Demo</title>
+                        <script type="application/javascript">
+                            window.__INITIAL_STATE__ = ${initialState};
+                        </script>
+                    </head>
+                    <body>
+                        <div id="react-view">${componentHTML}</div>
+                        <script type="application/javascript" src="/bundle.js"></script>
+                    </body>
+                </html>
+            `;
 
-        res.end(HTML);
+            return HTML;
+        }
+
+        fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
+            .then(renderView)
+            .then(html => res.end(html))
+            .catch(err => res.end(err.message));
     });
 });
 

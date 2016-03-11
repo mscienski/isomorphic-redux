@@ -12,6 +12,10 @@ const mapStateToProps = function(state) {
 
 @connect(mapStateToProps)
 export default class Home extends Component {
+    static needs = [
+        TodoActions.getTodos
+    ];
+
     render() {
         return (
             <div id="todo-list">

@@ -26,10 +26,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TodosList extends Component {
-    componentDidMount() {
-        this.props.getTodos();
-    }
-
     render() {
         return (
             <div>
