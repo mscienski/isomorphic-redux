@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {deleteTodo, editTodo} from 'actions/TodoActions';
+import {deleteTodo, editTodo, getTodos} from 'actions/TodoActions';
 import Todo from 'components/Todo';
 import {connect} from 'react-redux';
 
@@ -17,12 +17,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         handleEdit: (id, val) => {
             let newVal = window.prompt('', val);
             dispatch(editTodo(id, newVal))
+        },
+        getTodos: () => {
+            dispatch(getTodos())
         }
     }
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class TodosList extends Component {
+    componentDidMount() {
+        this.props.getTodos();
+    }
+
     render() {
         return (
             <div>

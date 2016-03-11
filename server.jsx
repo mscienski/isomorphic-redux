@@ -3,15 +3,20 @@ import React from 'react';
 import {renderToString} from 'react-dom/server';
 import {RouterContext, match, browserHistory} from 'react-router';
 import routes from 'routes';
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
+import promiseMiddleware from 'lib/promiseMiddleware';
 import {Provider} from 'react-redux';
 import * as reducers from 'reducers';
 
 const app = express();
 
+const finalCreateStore = compose(
+    applyMiddleware(promiseMiddleware)
+)(createStore);
+
 app.use((req, res) => {
     const reducer = combineReducers(reducers);
-    const store = createStore(reducer);
+    const store = finalCreateStore(reducer);
 
     match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
         if (err) {
